@@ -6,7 +6,7 @@ include("fonctions.php");
 if(isset($_REQUEST['submit-form'])) {
 	if(isset($_REQUEST['username']) && $_REQUEST['username'] == 'elie' && $_REQUEST['password'] == 'test12') {
 		$_SESSION['username'] = 'elie';
-		header('Location: iot-farm.php');      
+		header('Location: dashboard.php');      
 		exit();
 	} else {
 		echo "erreur bad login/password";
