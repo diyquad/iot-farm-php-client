@@ -5,6 +5,7 @@
             <a href="dashboard.html"></a>
           </h1>
         </div>
+        <?php /* ?>
         <div class="sidebar-inner">
           <ul class="nav nav-sidebar">
             <li><a href="dashboard.php"><i class="icon-home"></i><span>Dashboard</span></a></li>
@@ -29,6 +30,7 @@
             <i class="icon-power"></i></a>
           </div>
         </div>
+         <?php */ ?>
       </div>
       <!-- END SIDEBAR -->
       <div class="main-content">

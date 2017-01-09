@@ -39,12 +39,11 @@ if(!isset($_SESSION['username'])) {
       <?php include("partials/menu.php"); ?>
          <!-- BEGIN PAGE CONTENT -->
         <div class="page-content">
+	         <?php include("partials/menufinal.php"); ?> 
+	        
           <div class="row">
-            <div class="col-md-6">
-				<img src="assets/global/images/loading.png" class="img-responsive" id="canvas-video" /> <!-- VIDEOS STREAM -->
-            </div>
-            <div class="col-md-6">
-	            <div class="col-md-3">
+	          <div class="col-md-12">
+	            <div class="col-md-2 col-md-offset-1">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -52,14 +51,14 @@ if(!isset($_SESSION['username'])) {
 	                      <i class="fa fa-tint bg-green"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="live-moisture1">0</p>
+	                      <p class="number" id="live-moisture1"></p>
 	                      <p class="text">Humidité <strong>Dwarf</strong></p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-3">
+	            <div class="col-md-2">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -67,14 +66,14 @@ if(!isset($_SESSION['username'])) {
 	                      <i class="fa fa-tint bg-blue"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="live-moisture2">0</p>
+	                      <p class="number" id="live-moisture2"></p>
 	                      <p class="text">Humidité <strong>White</strong></p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-3">
+	            <div class="col-md-2">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -82,14 +81,29 @@ if(!isset($_SESSION['username'])) {
 	                      <i class="fa fa-lightbulb-o bg-yellow" id="lumiere"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="live-light">0</p>
+	                      <p class="number" id="live-light"></p>
 	                      <p class="text">Lumière</p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	             <div class="col-md-3">
+	            <div class="col-md-2">
+	              <div class="panel">
+	                <div class="panel-content widget-info">
+	                  <div class="row">
+	                    <div class="left">
+	                      <i class="fa fa-thermometer-full bg-blue" id="temperature"></i>
+	                    </div>
+	                    <div class="right">
+	                      <p class="number" id="live-temp"></p>
+	                      <p class="text">Temperature</p>
+	                    </div>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
+	             <div class="col-md-2">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -104,14 +118,19 @@ if(!isset($_SESSION['username'])) {
 	                </div>
 	              </div>
 	            </div>
-	           <div class="row m-t-12">
-		           <div align="center"><h2>Dernière informations</h2></div>
-		            <div id="liste-infos"> </div>
-		            
-		          
-		       </div>
-            </div>  
-          </div><!-- FIN ROW 1 -->
+	          <div class="row">
+	            <div class="col-md-6 col-md-offset-3" align="center">
+					<img src="assets/global/images/loading.png" class="img-responsive" id="canvas-video" /> <!-- VIDEOS STREAM -->
+	            </div>
+	            	            </div>
+		           <div class="row m-t-12">
+			           <div align="center"><h2>Dernière informations</h2></div>
+			            <div id="liste-infos"> </div>
+			            
+			          
+			       </div>
+	            </div>  
+	          </div><!-- FIN ROW 1 -->
                   
           
           <div class="row m-t-10">
@@ -328,6 +347,7 @@ if(!isset($_SESSION['username'])) {
 		//On va gerer les dats
 		var datafinale = new Array();
 		var moisture2 = new Array();
+		var temperature = new Array();
 		var intermediaire,i=0;
 		
 		//On calcul les dates pour avoir les datas entre J-5 et J
@@ -353,6 +373,7 @@ if(!isset($_SESSION['username'])) {
 					//intermediaire = jQuery.parseJSON(lesdatas[i][2]);
 					datafinale[i] = new Array(lesdatas[i]['date'],lesdatas[i]['humidite1']);
 					moisture2[i]= new Array(lesdatas[i]['date'],lesdatas[i]['humidite2']);
+					temperature[i]= new Array(lesdatas[i]['date'],lesdatas[i]['temperature']);
 					//console.log(datafinale[i]);
 					i++;
 		 		}
@@ -433,6 +454,64 @@ if(!isset($_SESSION['username'])) {
 				                return data;
 				            }())
 					    }]
+				    });
+				    
+				    
+				    
+				    chart1 = Highcharts.stockChart('chart-temperature', {
+				        rangeSelector: {
+				            buttons: [{
+				                count: 1,
+				                type: 'hour',
+				                text: '1H'
+				            },{
+				                count: 12,
+				                type: 'hour',
+				                text: '12H'
+				            }, {
+				                count: 24,
+				                type: 'hour',
+				                text: '24H'
+				            },
+				            {
+				                count: 2,
+				                type: 'day',
+				                text: '2D'
+				            },{
+				                count: 5,
+				                type: 'day',
+				                text: '5D'
+				            }, {
+				                type: 'all',
+				                text: 'All'
+				            }],
+				            inputEnabled: false,
+				            selected: 0
+				        },
+				
+				        title: {
+				            text: 'Temperature en temps réel'
+				        },
+				        exporting: {
+				            enabled: false
+				        },
+				        series: [{
+				            name: 'General ',
+				            data: (function () {
+				                var data = [],
+				                    time = (new Date()).getTime(),
+				                    i;
+				                for (i = 0; i < temperature.length; i = i + 1) {
+				                    data.push([
+				                        time = (new Date(temperature[i][0])).getTime(),
+				                        temperature[i][1]
+				                        
+				                    ]);
+				                   
+				                }
+				                return data;
+				            }())
+				        }]
 				    });
 				},500);	
 			}

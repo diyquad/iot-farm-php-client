@@ -2252,10 +2252,10 @@ class PHP_CRUD_API {
 
 $api = new PHP_CRUD_API(array(
  	'dbengine'=>'MySQL',
- 	'hostname'=>'mysql-robotperso.alwaysdata.net',
- 	'username'=>'130280_iotfarm',
- 	'password'=>'test12345',
- 	'database'=>'robotperso_iotfarm',
+ 	'hostname'=>'vps356572.ovh.net',
+ 	'username'=>'elie',
+ 	'password'=>'clic2clic55',
+ 	'database'=>'robotperso',
  	'charset'=>'utf8'
  ));
 

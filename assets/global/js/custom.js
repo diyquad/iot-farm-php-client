@@ -29,7 +29,10 @@ $(document).ready(function()
 		$("#rpi-status").html("<strong>Connected!!</strong>");
 
 	}); 
-	
+	socket.on('disconnect', function () {
+        console.log("disconnected");  
+    });
+    
 	socket.emit('get-all-sensors');
 	
 	//On affiche la video
@@ -38,15 +41,23 @@ $(document).ready(function()
 	
 	socket.on("all-sensors", function(data) {
 		datajson = data.data;
+		console.log(datajson);
 		$("#live-moisture1").html(datajson['moisture']);
 		$("#live-moisture2").html(datajson['moisture2']);
 		$("#live-light").html(datajson['lumiere']);
-		if(datajson['lumiere']>800) {
+		$("#live-temp").html(datajson['temp']);
+		if(datajson['lumiere']>800 || datajson['lumiere']<5) {
 			$("#lumiere").removeClass('bg-yellow');
 			$("#lumiere").addClass('bg-dark');
+			$("#lumiere").removeClass('fa fa-sun-o');
+			$("#lumiere").addClass('fa fa-moon-o ');
 		} else {
 			$("#lumiere").removeClass('bg-dark');
 			$("#lumiere").addClass('bg-yellow');
+			$("#lumiere").removeClass('fa fa-moon-o');
+			$("#lumiere").addClass('fa fa-sun-o');
+			
+			
 		}
 
 	});
@@ -54,27 +65,12 @@ $(document).ready(function()
 	var lesdatas = [];
 	socket.emit('get-humidity-sensor');
 	
-	/*
-	socket.on("humidity-sensor", function(data) {
-    	lesdatas[j] = jQuery.parseJSON(data.data);
-    	j++;
-	});
-	/*
-	socket.on("humidity-sensor-update", function(data) {
-		data = jQuery.parseJSON(data.data);
-		console.log('Update received JSON- ' +data);
-		var x = (new Date(data['date'])).getTime();
-		var    y = data['moisture'];
-		chart1.series[0].addPoint([x, y], true, true);
-		console.log('Ajout des points - x:'+x +'- y:'+ y);
-	});*/
-	
+		
 	/*
 		Lancement du graphique 1seconde apres le chargement de la page, pour recuperer les datas avant
 	*/
 	
-	
-		//Call AJAX POUR obtenir les datas
+	//Call AJAX POUR obtenir les datas
 			
 	
 	
@@ -107,15 +103,18 @@ $(document).ready(function()
 		Gestion du formulaire
 	*/
 	$("#form-infos").hide();
+	$("#confirmation-infos").hide();
 	$("#ajout-infos").click(function () {
 		$("#form-infos").toggle();
 	});
 	
 	$("#valider-infos").click(function () {
 		var data = {};
-		data['date'] = $("#date-infos").val();
+		var dateNow = new Date($.now());
+		//data['date'] = [dateNow.getFullYear() ,dateNow.getMonth()+1, dateNow.getDate()].join('-');
+		data['date'] = new Date().toISOString().slice(0, 19).replace('T', ' ');
 		data['titre'] = $("#titre-infos").val();
-		data['text'] = $("#text-infos").val();
+		data['texte'] = $("#text-infos").val();
 		$.ajax( {
 			type:'POST',
 			url:'http://robotperso.eu/api/api.php/infos',
@@ -127,18 +126,46 @@ $(document).ready(function()
 		//socket.emit('save-infos', data);
 		$("#valider-infos").hide();
 		$("#form-infos").hide();
+		getInfos();
 
 	});
 	socket.on("save-infos-ok", function(data) {
 		console.log('Confirmation infos sauvegarder en BD ');
 		$("#confirmation-infos").show();
 	});
+	getInfos();
 	
+	
+	
+	/*
+		
+		Gestion du reboot 
+		
+	*/
+	$("#reboot").click(function () {
+		socket.emit('reboot');
+		$("#live-moisture1").html('-');
+		$("#live-moisture2").html('-');
+		$("#live-light").html('-');
+		$("#live-temp").html('-');
+		$("#rpi-status").html("<strong>Reboot in progress...</strong>");				
+			
+
+		setInterval(function() {
+			location.reload();
+		},150000);
+	});
+	
+
+		
+});
+function getInfos() {
 	$.ajax( {
 		type:'Get',
 		url:'http://robotperso.eu/api/api.php/infos?transform=1&order=date,desc&page=1',
 		success:function(data) {
 			var i=0;
+			$('#liste-infos').html('');
 			while(i<data['infos'].length) {
 				$('#liste-infos').append(formattedDate(data['infos'][i]['date']) + ' : ');
 				$('#liste-infos').append('<strong>'+data['infos'][i]['titre']+'</strong><br/>');
@@ -148,6 +175,4 @@ $(document).ready(function()
 			}
 		}
 	});	
-
-		
-});
+}

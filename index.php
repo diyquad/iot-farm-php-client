@@ -4,7 +4,7 @@
 include("fonctions.php");
 
 if(isset($_REQUEST['submit-form'])) {
-	if(isset($_REQUEST['username']) && $_REQUEST['username'] == 'elie' && $_REQUEST['password'] == 'test12') {
+	if(isset($_REQUEST['username']) &&  strtolower($_REQUEST['username']) == 'elie' && $_REQUEST['password'] == 'test12') {
 		$_SESSION['username'] = 'elie';
 		header('Location: dashboard.php');      
 		exit();

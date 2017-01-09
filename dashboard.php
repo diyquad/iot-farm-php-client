@@ -37,11 +37,12 @@ if(!isset($_SESSION['username'])) {
     <section>
       <?php include("partials/menu.php"); ?>
               <!-- BEGIN PAGE CONTENT -->
-        <div class="page-content">
-          <div class="row">
-            
+    <div class="page-content">
+	    <?php include("partials/menufinal.php"); ?>
+	        
+        <div class="row">
             <div class="col-md-12">
-	            <div class="col-md-3">
+	            <div class="col-md-2 col-md-offset-1">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -49,14 +50,14 @@ if(!isset($_SESSION['username'])) {
 	                      <i class="fa fa-tint bg-green"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="live-moisture1">0</p>
+	                      <p class="number" id="live-moisture1"></p>
 	                      <p class="text">Humidité <strong>Dwarf</strong></p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-3">
+	            <div class="col-md-2">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -64,14 +65,14 @@ if(!isset($_SESSION['username'])) {
 	                      <i class="fa fa-tint bg-blue"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="live-moisture2">0</p>
+	                      <p class="number" id="live-moisture2"></p>
 	                      <p class="text">Humidité <strong>White</strong></p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	            <div class="col-md-3">
+	            <div class="col-md-2">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
@@ -79,35 +80,65 @@ if(!isset($_SESSION['username'])) {
 	                      <i class="fa fa-lightbulb-o bg-yellow" id="lumiere"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="live-light">0</p>
+	                      <p class="number" id="live-light"></p>
 	                      <p class="text">Lumière</p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	             <div class="col-md-3">
+	            <div class="col-md-2">
 	              <div class="panel">
 	                <div class="panel-content widget-info">
 	                  <div class="row">
 	                    <div class="left">
-	                      <i class="fa fa-lightbulb-o bg-yellow" id="lumiere"></i>
+	                      <i class="fa fa-thermometer-full bg-blue" id="temperature"></i>
 	                    </div>
 	                    <div class="right">
-	                      <p class="number" id="rpi-status">DISCONNECTED ;(</p>
-	                      <p class="text">RPI NODE</p>
+	                      <p class="number" id="live-temp"></p>
+	                      <p class="text">Temperature</p>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-	             <div class="row">
-		 	<div class="col-md-12" id="pompe">
-				<div class="btn btn-primary" id="pompe-on">Pompe ON</div>
-				<div class="btn btn-primary" id="pompe-off">Pompe OFF</div>
-				<div class="btn btn-primary" id="pompe-arrosage">Pompe ARROSAGE</div>
-			</div>	
-	      </div>
+	            <div class="col-md-2">
+	            	<div class="panel">
+	                	<div class="panel-content widget-info">
+							<div class="row">
+								<div class="left">
+									<i class="fa fa-lightbulb-o bg-yellow" id="lumiere"></i>
+	                    		</div>
+								<div class="right">
+									<p class="number" id="rpi-status">DISCONNECTED ;(</p>
+									<p class="text">RPI NODE</p>
+	                    		</div>
+	                  		</div>
+	                	</div>
+	              	</div>
+	            </div>
+	            <div class="col-md-1">
+                	<div class="row">
+		              	<div class="quick-link">
+		                	<div class="row" id="reboot">
+								<div class="icon">
+									<i class="fa fa-lightbulb-o bg-green"></i>
+		                  		</div>
+						  	<p class="text">Reboot</p>
+		                	</div>
+		              	</div>
+                	</div>
+	            </div>
+            </div>
+	            
+	                       
+	        <div class="row">
+			 	<div class="col-md-12" id="pompe">
+					<div class="btn btn-primary" id="pompe-on">Pompe ON</div>
+					<div class="btn btn-primary" id="pompe-off">Pompe OFF</div>
+					<div class="btn btn-primary" id="pompe-arrosage">Pompe ARROSAGE</div>
+				</div>	
+	      	</div>
 
 	           <div class="col-md-6">
 		           <div align="center"><h2>Dernière informations</h2></div>
@@ -217,7 +248,9 @@ if(!isset($_SESSION['username'])) {
 		var intermediaire,i=0;
 		
 				
-		
+		socket.on('disconnect', function () {
+        console.log("disconnected");  
+    });
 	</script>
     
   </body>

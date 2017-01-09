@@ -65,6 +65,7 @@ function getDataMoisture() {
 }
 
 function AjouterInfos($data) {
+	
 	$data['date'] = date("Y-m-d H:i:s");
 	$data['titre'] = $_REQUEST['titre'];
 	$data['texte'] = $_REQUEST['text'];
